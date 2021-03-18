@@ -10,37 +10,63 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('upload', function (Request $request) {
-    $validator = $request->validate([
-        'file'=>'required'
-    ]);
+Route::post('upload', function (Files $files, Request $request) {
+    //return dd($request->files->get('name'));
+    $file = $request->files->get('name');
+    
+    //return $file->getClientOriginalName();
+    // return $file->getClientOriginalExtension();
+    //return dd($request);
+    // $fileee = $request->name->store('files');
+    // return $fileee;
+    //return $file;
+    
 
-    if($request->file('file')->isValid()){
 
+    // $validator = $request->validate([
+    //     'file'=>'required'
+    // ]);
+
+    //if($request->file('file')->isValid()){
         // if(o campo pasta for definido){
             //criar e salvar na pasta
         // }else{
-        $files = new Files();
-        $file = $request->file('files');
         
-        $fileName = $file->originalName;
-        $fileSize = $file->size;
-        $fileType = $file->mimeType;
-        $fileUpload = $file->store('uploads');
+
+
+
+        //$file = $request->file('files');
+
+
+       // $fileName = $file->getClientOriginalName();
+        //return $fileName;
+        //$fileSize = $file->getSize();
+       // $fileType = $file->getClientOriginalExtension();
+        //$fileUpload = $request->name->store('files');
+
+        //$arr = [
+      //      $fileName,
+      //      $fileSize,
+      //      $fileType,
+       //     $fileUpload
+       // ];
+        //return $arr;
         // }
         //retorna o caminho exato do file
         //$path = Storage::path($fileUpload);
-        $files->name = $fileName;
-        $files->size = $fileSize;
-        $files->type = $fileType;
-        $files->url = $fileUpload;
+        $files->name = $file->getClientOriginalName();
+        $files->size = $file->getSize();
+        $files->type = $file->getClientOriginalExtension();
+
+        // $fileUpload = $file->store('files');
+        $files->url = $request->name->store('files');
         $files->save();
 
-        // return [
-        //     'STATUS'=>'OK'
-        // ];
+        return [
+            'STATUS'=>'OK'
+        ];
         
-    }
+    //}
     
     
 
