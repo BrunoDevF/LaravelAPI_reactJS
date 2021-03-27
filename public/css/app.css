@@ -21,6 +21,7 @@ Use a better box model (opinionated).
 Use a more readable tab size (opinionated).
 */
 
+
 :root {
   -moz-tab-size: 4;
   -o-tab-size: 4;
@@ -15477,7 +15478,7 @@ select {
 }
 
 .min-h-screen {
-  min-height: 100vh;
+  min-height: 18vh;
 }
 
 .min-w-0 {
