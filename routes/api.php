@@ -43,11 +43,14 @@ Route::post('upload', function (Files $files, Request $request) {
     $files->type = $file->getClientOriginalExtension();
 
     if(!empty($request->input('folder'))){
-        $folder = $request->folder;
+        $folder = ucfirst($request->folder);
+        // $files->url = $folder;
         //dd($pasta);
-        $files->url = $request->file->storeAs($folder, $file->getClientOriginalName());
+        $files->url = Storage::url($request->file->storeAs($folder, $file->getClientOriginalName()));
+        //$files->url = $request->file->storeAs($folder, $file->getClientOriginalName());
     }else{
-        $files->url = $request->file->storeAs('drop', $file->getClientOriginalName());
+        $files->url = "drop";
+        // $files->url = $request->file->storeAs('drop', $file->getClientOriginalName());
     }
     $files->save();
 
@@ -62,14 +65,19 @@ Route::post('upload', function (Files $files, Request $request) {
     //}
 });
 
-Route::get('list', function(Request $request, Files $files){
-    $files = $files::all();
+Route::any('list', function(Request $request, Files $files){
+    if(!empty($request->input('filter'))){
+        $files = $files::all()->where('url',$request->input('filter'));
+    }
+    else{
+        $files = $files::all();
+    }
+    return $files;
 
     //caso queira corrigir url da imagem 
     //pode ser rodado um foreach pegando a url no storage 
     // foreach ($files as $key => $value) {
-    //     $files[$key]['url'] = asset($files['url']);
+    //     $files[$key]['url'] = asset($value['url']);
     // }
-    return $files;
 });
 
